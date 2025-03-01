@@ -5,14 +5,30 @@
 //  Created by Jaspreet Bhullar on 01/03/25.
 //
 
-import SwiftUI
+import Foundation
+import SwiftData
 
-struct Reminder: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+@Model
+class Reminder {
+    
+    var title: String
+    var note: String?
+    var isCompleted: Bool
+    var remiderDate: Date?
+    var reminderTime: Date?
+    
+    var list: MyList?
+    
+    init(title: String, note: String? = nil, isCompleted: Bool = false, remiderDate: Date? = nil, reminderTime: Date? = nil, list: MyList? = nil) {
+        self.title = title
+        self.note = note
+        self.isCompleted = isCompleted
+        self.remiderDate = remiderDate
+        self.reminderTime = reminderTime
+        self.list = list
     }
+    
+    
+    
 }
 
-#Preview {
-    Reminder()
-}
