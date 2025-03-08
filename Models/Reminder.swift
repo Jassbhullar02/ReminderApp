@@ -12,7 +12,7 @@ import SwiftData
 class Reminder {
     
     var title: String
-    var note: String?
+    var notes: String?
     var isCompleted: Bool
     var remiderDate: Date?
     var reminderTime: Date?
@@ -21,7 +21,7 @@ class Reminder {
     
     init(title: String, note: String? = nil, isCompleted: Bool = false, remiderDate: Date? = nil, reminderTime: Date? = nil, list: MyList? = nil) {
         self.title = title
-        self.note = note
+        self.notes = note
         self.isCompleted = isCompleted
         self.remiderDate = remiderDate
         self.reminderTime = reminderTime
