@@ -11,8 +11,25 @@ import SwiftData
 struct MyListScreen: View {
     
     @Query private var myList: [MyList]
-    
     @State private var isPresented: Bool = false
+    @State private var selectedList: MyList?
+    
+    @State private var actionSheet: MyListScreenSheets?
+    
+    enum MyListScreenSheets: Identifiable {
+        case newList
+        case editList(MyList)
+        
+        var id: Int {
+            switch self {
+            case .newList:
+                return 1
+            case .editList(let myList):
+                return myList.hashValue
+            }
+        }
+        
+    }
     
     var body: some View {
         List{
@@ -25,17 +42,19 @@ struct MyListScreen: View {
                 NavigationLink {
                     MyListDetailScreen(myList: myList)
                 } label: {
-                    HStack{
-                        Image(systemName: "line.3.horizontal.circle.fill")
-                            .font(.system(size: 32))
-                            .foregroundStyle(Color(hex: myList.colorCode))
-                        Text(myList.name)
-                    }
+                    MyListCellView(myList: myList)
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            selectedList = myList
+                        }
+                        .onLongPressGesture(minimumDuration: 0.5) {
+                            actionSheet = .editList(myList)
+                        }
                 }
             }
             
             Button {
-                isPresented = true
+                actionSheet = .newList
             } label: {
                 Text("Add List")
                     .foregroundStyle(.blue)
@@ -43,12 +62,24 @@ struct MyListScreen: View {
             }
             .listRowSeparator(.hidden)
             
-        }.listStyle(.plain)
-            .sheet(isPresented: $isPresented, content: {
-                NavigationStack{
+        }
+        .navigationDestination(item: $selectedList, destination: { myList in
+            Text(myList.name)
+        })
+        
+        .listStyle(.plain)
+        .sheet(item: $actionSheet) { actionSheet in
+            switch actionSheet {
+            case .newList:
+                NavigationStack {
                     AddMyListScreen()
                 }
-            })
+            case .editList(let myList):
+                NavigationStack {
+                    AddMyListScreen(myList: myList)
+                }
+            }
+        }
     }
 }
 

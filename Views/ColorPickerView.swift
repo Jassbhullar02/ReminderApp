@@ -17,16 +17,13 @@ struct ColorPickerView: View {
         HStack {
             ForEach(colors, id: \.self) { color in
                 ZStack {
-                    Circle()
+                    Circle().fill()
                         .foregroundColor(color)
-                        .frame(width: 40, height: 40)
                         .padding(2)
-                    
-                    if selectedColor == color {
                         Circle()
-                            .strokeBorder(.gray, lineWidth: 4)
-                            .frame(width: 46, height: 46)
-                    }
+                        .strokeBorder(selectedColor.toHex() == color.toHex() ? .gray: .clear, lineWidth: 4)
+                        .scaleEffect(CGSize(width: 1.2, height: 1.2))
+                    
                 }
                 .onTapGesture {
                     selectedColor = color
@@ -34,7 +31,7 @@ struct ColorPickerView: View {
             }
         }
         .padding()
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: 100)
         .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
     }
 }

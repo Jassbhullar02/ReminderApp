@@ -21,6 +21,16 @@ struct ReminderCellView: View {
     let onEvent: (ReminderCellEvents) -> Void
     @State private var checked: Bool = false
     
+    private func formetReminderDate(_ date: Date) -> String {
+        if date.isToday {
+            return "Today"
+        } else if date.isTomorrow {
+            return "Tomorrow"
+        } else {
+            return date.formatted(date: .numeric, time: .omitted)
+        }
+    }
+    
     var body: some View {
         HStack(alignment: .top) {
             
@@ -29,7 +39,6 @@ struct ReminderCellView: View {
                 .padding([.trailing], 5)
                 .onTapGesture {
                     checked.toggle()
-//                    reminder.isCompleted.toggle()
                     onEvent(.onChecked(reminder, checked))
                 }
             
@@ -46,11 +55,11 @@ struct ReminderCellView: View {
                 
                 HStack {
                     if let reminderDate = reminder.remiderDate {
-                        Text(reminderDate.formatted())
+                        Text(formetReminderDate(reminderDate))
                     }
 
                     if let reminderTime = reminder.reminderTime {
-                        Text(reminderTime.formatted())
+                        Text(reminderTime, style: .time)
                     }
                 }.font(.caption)
                   .foregroundStyle(.gray)
