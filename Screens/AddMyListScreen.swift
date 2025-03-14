@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct AddMyListScreen: View {
     
@@ -36,8 +35,7 @@ struct AddMyListScreen: View {
                 color = Color(Color(hex: myList.colorCode))
             }
         })
-        
-        .navigationTitle("New List")
+        .navigationTitle(myList == nil ? "New List": "Edit List")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

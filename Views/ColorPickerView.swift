@@ -23,7 +23,6 @@ struct ColorPickerView: View {
                         Circle()
                         .strokeBorder(selectedColor.toHex() == color.toHex() ? .gray: .clear, lineWidth: 4)
                         .scaleEffect(CGSize(width: 1.2, height: 1.2))
-                    
                 }
                 .onTapGesture {
                     selectedColor = color

@@ -10,25 +10,38 @@ import SwiftData
 
 struct MyListDetailScreen: View {
     
-    var myList: MyList
+    let myList: MyList
+    @Query private var reminders: [Reminder]
+    
     @State private var title: String = ""
     @State private var isNewReminderPresented: Bool = false
     
     @State private var selectedReminder: Reminder?
     @State private var showReminderEditScreen: Bool = false
-    
+     
     @Environment(\.modelContext) private var context
-    
-    private let delay = Delay()
+     
+    init(myList: MyList) {
+        
+        self.myList = myList
+        
+        let listId = myList.persistentModelID
+        
+        let predicate = #Predicate<Reminder> { reminder in
+            reminder.list?.persistentModelID == listId
+            && !reminder.isCompleted
+        }
+        
+        _reminders = Query(filter: predicate)
+    }
     
     private var isFormValid: Bool {
         !title.isEmptyOrWhitespace
     }
     
     private func saveReminder() {
-        let reminders = Reminder(title: title)
-        myList.reminders.append(reminders)
-        title = ""
+        let reminder = Reminder(title: title)
+        myList.reminders?.append(reminder)
     }
     
     private func isReminderSelected(_ reminder: Reminder) -> Bool {
@@ -37,64 +50,47 @@ struct MyListDetailScreen: View {
     
     private func deleteReminder(_ indexSet: IndexSet) {
         guard let index = indexSet.last else { return }
-        let reminder = myList.reminders[index]
+        guard let reminder = myList.reminders?[index] else { return }
+        
         context.delete(reminder)
     }
     
     var body: some View {
-        VStack{
-            List {
-                ForEach(myList.reminders.filter {!$0.isCompleted}) { reminder in
-                    ReminderCellView(reminder: reminder, isSelected: isReminderSelected(reminder)) { event in
-                        switch event {
-                        case .onChecked(let reminder, let checked):
-                            
-                            // cancel pending task
-                            delay.cancel()
-                            
-                            delay.performWork {
-                                reminder.isCompleted = checked
-                            }
-                            
-                        case .onSelect(let reminder):
-                            selectedReminder = reminder
-                        case .onInfoSelected(let reminder):
-                            showReminderEditScreen = true
-                            selectedReminder = reminder
-                        }
-                        
-                    }
-                }.onDelete(perform: deleteReminder)
-            }
+        VStack {
+              
+            ReminderListView(reminders: reminders)
+            
             Spacer()
-            Button {
+            Button(action: {
                 isNewReminderPresented = true
-            } label: {
-                HStack{
+            }, label: {
+                HStack {
                     Image(systemName: "plus.circle.fill")
                     Text("New Reminder")
                 }
-            }
+            })
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
             
-        }.navigationTitle(myList.name)
-            .alert("New Reminder", isPresented: $isNewReminderPresented) {
-                TextField("", text: $title)
-                Button("Cancel", role: .cancel) {}
-                Button("Done") {
+        }.alert("New Reminder", isPresented: $isNewReminderPresented) {
+            TextField("", text: $title)
+            Button("Cancel", role: .cancel) { }
+            Button("Done") {
+                if isFormValid {
                     saveReminder()
-                }.disabled(!isFormValid)
-            }
-            .sheet(isPresented: $showReminderEditScreen) {
-                if let selectedReminder {
-                    NavigationView {
-                        ReminderEditScreen(reminder: selectedReminder)
-                    }
+                    title = ""
                 }
             }
+        }
+        .navigationTitle(myList.name)
+        .sheet(isPresented: $showReminderEditScreen, content: {
+            if let selectedReminder {
+                NavigationStack {
+                    ReminderEditScreen(reminder: selectedReminder)
+                }
+            }
+        })
     }
-    
 }
 
 struct MyListDetailScreenContainer: View {
@@ -109,6 +105,5 @@ struct MyListDetailScreenContainer: View {
 #Preview { @MainActor in
     NavigationStack {
         MyListDetailScreenContainer()
-    }
-    .modelContainer(previewContainer)
+    }.modelContainer(previewContainer)
 }

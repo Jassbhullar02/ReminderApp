@@ -25,8 +25,11 @@ struct ReminderEditScreen: View {
     private func updateReminder() {
         reminder.title = title
         reminder.notes = notes.isEmpty ? nil : notes
-        reminder.remiderDate = showCalendar ? remiderDate: nil
+        reminder.reminderDate = showCalendar ? remiderDate: nil
         reminder.reminderTime = showTime ? remiderDate: nil
+        
+        // schedule a local notification
+        NotificationManager.scheduleNotification(userData: UserData(title: reminder.title, body: reminder.notes, date: reminder.reminderDate, time: reminder.reminderTime))
     }
     
     private var isFormValid: Bool {
@@ -76,9 +79,9 @@ struct ReminderEditScreen: View {
         }.onAppear(perform: {
             title = reminder.title
             notes = reminder.notes ?? ""
-            remiderDate = reminder.remiderDate ?? Date()
+            remiderDate = reminder.reminderDate ?? Date()
             reminderTime = reminder.reminderTime ?? Date()
-            showCalendar = reminder.remiderDate != nil
+            showCalendar = reminder.reminderDate != nil
             showTime = reminder.reminderTime != nil
         })
         .navigationTitle("Detail")

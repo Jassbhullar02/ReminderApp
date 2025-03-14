@@ -17,6 +17,7 @@ struct MyListCellView: View {
                 .font(.system(size: 32))
                 .foregroundStyle(Color(hex: myList.colorCode))
             Text(myList.name)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }
