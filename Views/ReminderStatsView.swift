@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ReminderStatsView: View {
     
+    // MARK: - Variables
     let icon: String
     let title: String
     let count: Int
@@ -18,6 +19,9 @@ struct ReminderStatsView: View {
             HStack {
                 VStack(spacing: 10) {
                     Image(systemName: icon)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30)
                     Text(title)
                 }
                 Spacer()

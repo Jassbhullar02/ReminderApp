@@ -9,6 +9,7 @@ import Foundation
 
 class Delay {
     
+    // MARK: - Variables
     private var seconds: Double
     var workItem: DispatchWorkItem?
     
@@ -16,6 +17,7 @@ class Delay {
         self.seconds = seconds
     }
     
+    // MARK: - Functions
     func performWork(_ work: @escaping () -> Void) {
         
         workItem = DispatchWorkItem(block: {

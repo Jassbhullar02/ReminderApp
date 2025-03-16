@@ -11,9 +11,9 @@ import SwiftData
 enum ReminderStatsType: Int, Identifiable {
     
     case today
-        case scheduled
-        case all
-        case completed
+    case scheduled
+    case all
+    case completed
         
     var id: Int {
         self.rawValue
@@ -31,11 +31,11 @@ enum ReminderStatsType: Int, Identifiable {
                 return "Completed"
         }
     }
-    
 }
 
 struct MyListsScreen: View {
     
+    // MARK: - Variables
     @Environment(\.modelContext) private var context
     
     @Query private var myLists: [MyList]
@@ -119,7 +119,6 @@ struct MyListsScreen: View {
     
     var body: some View {
         List {
-            
             VStack {
                 HStack {
                     ReminderStatsView(icon: "calendar", title: "Today", count: todaysReminders.count)

@@ -11,6 +11,7 @@ import SwiftData
 @Model
 class MyList {
     
+    // MARK: - Variables
     var name: String = ""
     var colorCode: String = "#34C759"
     
@@ -21,5 +22,4 @@ class MyList {
         self.name = name
         self.colorCode = colorCode
     }
-    
 }

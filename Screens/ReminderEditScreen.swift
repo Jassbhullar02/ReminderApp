@@ -10,8 +10,8 @@ import SwiftData
 
 struct ReminderEditScreen: View {
     
+    // MARK: - Variables
     let reminder: Reminder
-    
     @Environment(\.dismiss) private var dismiss
     
     @State private var title: String = ""
@@ -22,6 +22,7 @@ struct ReminderEditScreen: View {
     @State private var showCalendar: Bool = false
     @State private var showTime: Bool = false
     
+    // MARK: - Private function
     private func updateReminder() {
         reminder.title = title
         reminder.notes = notes.isEmpty ? nil : notes
@@ -115,6 +116,5 @@ struct ReminderEditScreenContainer: View {
 #Preview {
     NavigationStack {
         ReminderEditScreenContainer()
-    }
-        .modelContainer(previewContainer)
+    }.modelContainer(previewContainer)
 }

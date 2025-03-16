@@ -9,8 +9,9 @@ import SwiftUI
 
 struct ColorPickerView: View {
     
+    // MARK: - Variables
     @Binding var selectedColor: Color
-    
+
     let colors: [Color] = [.red, .green, .blue, .yellow, .orange, .purple]
     
     var body: some View {
@@ -21,7 +22,7 @@ struct ColorPickerView: View {
                         .foregroundColor(color)
                         .padding(2)
                         Circle()
-                        .strokeBorder(selectedColor.toHex() == color.toHex() ? .gray: .clear, lineWidth: 4)
+                        .strokeBorder(selectedColor == color ? .gray: .clear, lineWidth: 4)
                         .scaleEffect(CGSize(width: 1.2, height: 1.2))
                 }
                 .onTapGesture {

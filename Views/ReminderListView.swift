@@ -10,14 +10,16 @@ import SwiftData
 
 struct ReminderListView: View {
     
+    // MARK: - Variables
     let reminders: [Reminder]
     @Environment(\.modelContext) private var context
     
     @State private var selectedReminder: Reminder? = nil
     @State private var showReminderEditScreen: Bool = false
     
-    @State private var reminderIdAndDelay: [PersistentIdentifier: Delay] = [: ]
+    @State private var reminderIdAndDelay: [PersistentIdentifier: Delay] = [:]
     
+    // MARK: - Private functions
     private func deleteReminder(_ indexSet: IndexSet) {
         guard let index = indexSet.last else { return }
         let reminder = reminders[index]

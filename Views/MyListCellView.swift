@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MyListCellView: View {
-    
+    // MARK: - Variables
     let myList: MyList
     
     var body: some View {

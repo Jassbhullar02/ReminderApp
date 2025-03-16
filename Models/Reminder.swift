@@ -11,6 +11,7 @@ import SwiftData
 @Model
 class Reminder {
     
+    // MARK: - Variables
     var title: String = ""
     var notes: String?
     var isCompleted: Bool = false

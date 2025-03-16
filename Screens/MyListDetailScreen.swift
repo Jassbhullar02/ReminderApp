@@ -10,16 +10,20 @@ import SwiftData
 
 struct MyListDetailScreen: View {
     
+    // MARK: - Variables
     let myList: MyList
     @Query private var reminders: [Reminder]
     
     @State private var title: String = ""
     @State private var isNewReminderPresented: Bool = false
-    
     @State private var selectedReminder: Reminder?
     @State private var showReminderEditScreen: Bool = false
      
     @Environment(\.modelContext) private var context
+    
+    private var isFormValid: Bool {
+        !title.isEmptyOrWhitespace
+    }
      
     init(myList: MyList) {
         
@@ -35,29 +39,8 @@ struct MyListDetailScreen: View {
         _reminders = Query(filter: predicate)
     }
     
-    private var isFormValid: Bool {
-        !title.isEmptyOrWhitespace
-    }
-    
-    private func saveReminder() {
-        let reminder = Reminder(title: title)
-        myList.reminders?.append(reminder)
-    }
-    
-    private func isReminderSelected(_ reminder: Reminder) -> Bool {
-        reminder.persistentModelID == selectedReminder?.persistentModelID
-    }
-    
-    private func deleteReminder(_ indexSet: IndexSet) {
-        guard let index = indexSet.last else { return }
-        guard let reminder = myList.reminders?[index] else { return }
-        
-        context.delete(reminder)
-    }
-    
     var body: some View {
         VStack {
-              
             ReminderListView(reminders: reminders)
             
             Spacer()
@@ -90,6 +73,23 @@ struct MyListDetailScreen: View {
                 }
             }
         })
+    }
+    
+    // MARK: - Private functions
+    private func saveReminder() {
+        let reminder = Reminder(title: title)
+        myList.reminders?.append(reminder)
+    }
+    
+    private func isReminderSelected(_ reminder: Reminder) -> Bool {
+        reminder.persistentModelID == selectedReminder?.persistentModelID
+    }
+    
+    private func deleteReminder(_ indexSet: IndexSet) {
+        guard let index = indexSet.last else { return }
+        guard let reminder = myList.reminders?[index] else { return }
+        
+        context.delete(reminder)
     }
 }
 

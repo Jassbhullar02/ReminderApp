@@ -10,6 +10,8 @@ import SwiftUI
 
 extension Color {
     
+    /// Converts a Color to its hexadecimal string representation.
+    /// Returns a hex string with or without alpha, depending on the color's opacity.
     func toHex() -> String? {
         let uic = UIColor(self)
         guard let components = uic.cgColor.components, components.count >= 3 else {
@@ -39,6 +41,8 @@ extension Color {
         }
     }
     
+    /// Initializes a Color from a hexadecimal string.
+    /// Supports both 6-character (RGB) and 8-character (RGBA) hex values, with or without the '#' prefix.
     init(hex: String) {
             // Remove '#' if exists
             var cleanedHex = hex

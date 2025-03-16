@@ -14,11 +14,12 @@ enum ReminderCellEvents {
 }
 
 struct ReminderCellView: View {
-    
+    // MARK: - Variables
     let reminder: Reminder
     let onEvent: (ReminderCellEvents) -> Void
     @State private var checked: Bool = false
-    
+
+    // MARK: - Private functions
     private func formetReminderDate(_ date: Date) -> String {
         if date.isToday {
             return "Today"

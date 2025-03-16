@@ -8,6 +8,7 @@
 import Foundation
 import UserNotifications
 
+/// Model to represent user data for notifications.
 struct UserData {
     let title: String?
     let body: String?
@@ -15,8 +16,10 @@ struct UserData {
     let time: Date?
 }
 
+/// Manages scheduling of notifications.
 struct NotificationManager {
     
+    /// Schedules a local notification using the provided user data.
     static func scheduleNotification(userData: UserData) {
         
         let content = UNMutableNotificationContent()
